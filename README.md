@@ -10,3 +10,4 @@ Dagger-Hilt,Material Components)
 
 
 ►Design Credit: https://www.behance.net/gallery/129879175/Foodizone-
+►Payment sheet Credit - Tariq Ebadi: https://finix.com/docs/guides/payments/online-payments/payment-details/mobile-tokenization/android-tokenization/
