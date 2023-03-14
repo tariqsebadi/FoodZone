@@ -4,10 +4,8 @@ import android.content.res.Configuration
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FilterList
@@ -32,6 +30,10 @@ import com.arvind.foodizone.R
 import com.arvind.foodizone.component.NetworkImage
 import com.arvind.foodizone.component.TopAppBarHome
 import com.arvind.foodizone.ui.theme.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.*
+import androidx.compose.material3.TextFieldDefaults
+
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -74,7 +76,7 @@ fun Title() {
             text = "What would you like to\n" +
                     "eat today \uD83D\uDE0B",
             color = colorBlack,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -95,6 +97,7 @@ fun Content() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Header() {
     Column(
@@ -106,7 +109,7 @@ fun Header() {
 
         Card(
             modifier = Modifier.height(50.dp),
-            elevation = 4.dp,
+            elevation = CardDefaults.cardElevation(4.dp),
             shape = RoundedCornerShape(24.dp)
         ) {
             TextField(
@@ -114,7 +117,7 @@ fun Header() {
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 5.dp),
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = colorWhite,
+                    containerColor = colorWhite,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
@@ -174,7 +177,7 @@ fun CategorySection() {
             Text(
                 text = "Categories",
                 color = colorBlack,
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.bodySmall
             )
             TextButton(
                 onClick = {
@@ -252,12 +255,12 @@ fun PopularSection() {
         )
         val popularTitleNameList = listOf("Chicken Burger", "Beef Burger")
         val popularSubTitleItemList = listOf("Burger King", "Shake Shack")
-        val popularPriceItemList = listOf("4.25", "3.45")
+        val popularPriceItemList = listOf("4.99", "6.99")
         val popularPriceTagItemList = listOf("$ ", "$ ")
 
         Text(
             text = "Popular now \uD83D\uDD25",
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.bodySmall,
             color = colorBlack
         )
 
@@ -293,14 +296,14 @@ fun PopularSection() {
                             Text(
                                 text = popularTitleNameList[item],
                                 fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.h6,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = colorBlack
                             )
 
                             Text(
                                 text = popularSubTitleItemList[item],
                                 fontWeight = FontWeight.Normal,
-                                style = MaterialTheme.typography.button,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = Color.Gray
                             )
 
@@ -329,7 +332,7 @@ fun PopularSection() {
                                             append(popularPriceItemList[item])
                                         }
                                     },
-                                    style = MaterialTheme.typography.h6,
+                                    style = MaterialTheme.typography.bodySmall,
 
 
                                     )
@@ -375,7 +378,7 @@ fun OfferDealSection() {
 
         Text(
             text = "Offer & Deal \uD83D\uDE04",
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.bodySmall,
             color = colorBlack
         )
 
@@ -411,14 +414,14 @@ fun OfferDealSection() {
                             Text(
                                 text = offerDealTitleNameList[item],
                                 fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.h6,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = colorBlack
                             )
 
                             Text(
                                 text = offerDealSubTitleItemList[item],
                                 fontWeight = FontWeight.Normal,
-                                style = MaterialTheme.typography.button,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = Color.Gray
                             )
 
@@ -447,7 +450,7 @@ fun OfferDealSection() {
                                             append(offerDealPriceItemList[item])
                                         }
                                     },
-                                    style = MaterialTheme.typography.h6,
+                                    style = MaterialTheme.typography.bodyLarge,
                                 )
 
                                 Box(

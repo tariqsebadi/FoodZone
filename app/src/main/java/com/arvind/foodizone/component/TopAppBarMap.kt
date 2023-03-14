@@ -9,15 +9,18 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arvind.foodizone.ui.theme.colorBlack
-import com.arvind.foodizone.ui.theme.colorRedDark
-import com.arvind.foodizone.ui.theme.colorWhite
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarMap() {
     Row(

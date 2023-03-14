@@ -3,11 +3,12 @@ package com.arvind.foodizone.view
 import android.content.res.Configuration
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,17 +16,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.arvind.foodizone.R
-import com.arvind.foodizone.component.StandardTextField
 import com.arvind.foodizone.navigation.Screen
 import com.arvind.foodizone.ui.theme.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
     Box(
@@ -79,7 +78,7 @@ fun LoginScreen(navController: NavController) {
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = colorWhite,
+                    containerColor = colorWhite,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
@@ -118,7 +117,7 @@ fun LoginScreen(navController: NavController) {
                     )
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = colorWhite,
+                    containerColor = colorWhite,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
@@ -137,7 +136,7 @@ fun LoginScreen(navController: NavController) {
                     navController.popBackStack()
                     navController.navigate(Screen.HomeScreen.route)
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorBlack),
+                colors = ButtonDefaults.buttonColors(containerColor = colorBlack),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
@@ -147,7 +146,7 @@ fun LoginScreen(navController: NavController) {
                 Text(
                     text = "Login to account \uD83D\uDE0B",
                     color = colorWhite,
-                    style = MaterialTheme.typography.button,
+                    style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                 )
             }
@@ -157,7 +156,7 @@ fun LoginScreen(navController: NavController) {
                 onClick = {
                     navController.navigate(Screen.CreateAccountScreen.route)
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorRedLite),
+                colors = ButtonDefaults.buttonColors(containerColor = colorRedLite),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
@@ -167,7 +166,7 @@ fun LoginScreen(navController: NavController) {
                 Text(
                     text = "Create new account",
                     color = colorWhite,
-                    style = MaterialTheme.typography.button,
+                    style = MaterialTheme.typography.labelSmall,
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
                 )
             }
@@ -183,7 +182,7 @@ fun LoginScreen(navController: NavController) {
                     Text(
                         text = "Forgot Password ?",
                         color = colorWhite,
-                        style = MaterialTheme.typography.button,
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
             }

@@ -5,4 +5,7 @@
     <string name="password_visible_content_description">Hide password</string>
     <string name="password_hidden_content_description">Show password</string>
 
+    <string name="logo_text">Hurt Attack Bugger</string>
+    <string name="buy">Buy Now</string>
+
 </resources>

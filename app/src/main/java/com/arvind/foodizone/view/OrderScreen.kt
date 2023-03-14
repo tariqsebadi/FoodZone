@@ -2,6 +2,7 @@ package com.arvind.foodizone.view
 
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,9 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Minimize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,11 +23,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.arvind.foodizone.R
 import com.arvind.foodizone.component.TopAppBarMyOrders
 import com.arvind.foodizone.data.MyOrdersDataDummy
 import com.arvind.foodizone.model.MyOrders
 import com.arvind.foodizone.ui.theme.*
+import com.finix.finixpaymentsheet.domain.model.PaymentSheetColors
+import com.finix.finixpaymentsheet.domain.model.PaymentSheetResources
+import com.finix.finixpaymentsheet.ui.viewModel.paymentSheet.CompletePaymentSheetOutlined
 
 @Composable
 fun OrderScreen(navController: NavHostController) {
@@ -44,44 +48,136 @@ fun OrderScreen(navController: NavHostController) {
 
 @Composable
 fun OrderMainContent() {
+
+    val viewModel: OrderViewModel = viewModel(factory = viewModelFactory {
+        OrderViewModel()
+    })
+
     Column {
-        OrderList()
-        OrderCalculateData()
+        OrderList(viewModel)
+        OrderCalculateData(viewModel)
     }
 }
 
 @Composable
-fun OrderCalculateData() {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(
-                start = 20.dp,
-                end = 20.dp,
-                top = 20.dp,
-                bottom = 20.dp
-            ),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(
-                onClick = {
+fun OrderCalculateData(viewModel: OrderViewModel) {
 
-                },
-                colors = ButtonDefaults.buttonColors(backgroundColor = colorRedLite),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .align(Alignment.CenterHorizontally),
-                shape = RoundedCornerShape(24.dp)
+    var showFinixPaymentSheet by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    val state = viewModel.state
+
+
+    if (showFinixPaymentSheet) {
+        CompletePaymentSheetOutlined(
+            onDismiss = {
+                showFinixPaymentSheet = !showFinixPaymentSheet
+                Toast.makeText(context, "Dialog dismissed!", Toast.LENGTH_SHORT).show()
+            },
+            onNegativeClick = {
+                showFinixPaymentSheet = !showFinixPaymentSheet
+                Toast.makeText(context, "Negative Button Clicked!", Toast.LENGTH_SHORT).show()
+            },
+            onPositiveClick = { Token ->
+                showFinixPaymentSheet = !showFinixPaymentSheet
+                Toast.makeText(context, "Tokenize Response: $Token", Toast.LENGTH_SHORT).show()
+            },
+            paymentSheetResources = PaymentSheetResources(
+                logoDrawable = R.drawable.burger,
+                logoText = R.string.logo_text,
+                tokenizeButtonText = R.string.buy
+            ),
+            paymentSheetColors = PaymentSheetColors(
+                tokenizeButtonColor = colorRedDark,
+                focusedIndicatorColor = colorRedDark,
+                focusedLabelColor = colorRedLite,
+                unfocusedLabelColor = Color.Gray,
+                cancelButtonColor = colorBlack,
+                placeholderColor = colorRedLite
+            ),
+            isSandbox = true
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 44.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    top = 20.dp,
+                    bottom = 20.dp
+                ),
+
+            verticalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.height(0.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Text(
-                    text = "Apply Coupon \uD83E\uDD11",
-                    color = colorWhite,
-                    style = MaterialTheme.typography.button,
-                    modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-                )
+                Button(
+                    onClick = {
+                              viewModel.updateTip(.10)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorRedLite),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
+                    shape = RoundedCornerShape(24.dp)
+                ) {
+                    Text(
+                        text = "10% \uD83E\uDD11",
+                        color = colorWhite,
+                        style = MaterialTheme.typography.button,
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                    )
+                }
+                Button(
+                    onClick = {
+                        viewModel.updateTip(.15)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorRedLite),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
+                    shape = RoundedCornerShape(24.dp)
+                ) {
+                    Text(
+                        text = "15% \uD83E\uDD11",
+                        color = colorWhite,
+                        style = MaterialTheme.typography.button,
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        viewModel.updateTip(.25)
+                    },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = colorRedLite),
+                    modifier = Modifier
+                        .height(50.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
+                    shape = RoundedCornerShape(24.dp)
+                ) {
+                    Text(
+                        text = "25% \uD83E\uDD11",
+                        color = colorWhite,
+                        style = MaterialTheme.typography.button,
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(0.dp))
             HorizontalDivider()
 
             Row(
@@ -90,12 +186,12 @@ fun OrderCalculateData() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Item total",
+                    text = "Menu total",
                     color = Color.Gray,
                     style = MaterialTheme.typography.button
                 )
                 Text(
-                    text = "$14.95",
+                    text = viewModel.mapToDollarValue(state.menuTotal),
                     color = colorBlack,
                     style = MaterialTheme.typography.button,
                     fontWeight = FontWeight.Bold
@@ -114,7 +210,7 @@ fun OrderCalculateData() {
                     style = MaterialTheme.typography.button
                 )
                 Text(
-                    text = "$2.25",
+                    text = viewModel.mapToDollarValue(state.deliveryFees),
                     color = colorBlack,
                     style = MaterialTheme.typography.button,
                     fontWeight = FontWeight.Bold
@@ -133,7 +229,27 @@ fun OrderCalculateData() {
                     style = MaterialTheme.typography.button
                 )
                 Text(
-                    text = "$2.95",
+                    text = viewModel.mapToDollarValue(state.tax),
+                    color = colorBlack,
+                    style = MaterialTheme.typography.button,
+                    fontWeight = FontWeight.Bold
+                )
+
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Tip",
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.button
+                )
+                Text(
+                    text = viewModel.mapToDollarValue(state.tip),
+//                    text = "$0.01",
                     color = colorBlack,
                     style = MaterialTheme.typography.button,
                     fontWeight = FontWeight.Bold
@@ -152,7 +268,7 @@ fun OrderCalculateData() {
                     style = MaterialTheme.typography.button
                 )
                 Text(
-                    text = "$20.15",
+                    text = state.orderTotal,
                     color = colorRedDark,
                     style = MaterialTheme.typography.h6,
                     fontWeight = FontWeight.Bold
@@ -170,7 +286,7 @@ fun OrderCalculateData() {
         ) {
             Button(
                 onClick = {
-
+                    showFinixPaymentSheet = !showFinixPaymentSheet
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = colorBlack),
                 modifier = Modifier
@@ -191,20 +307,22 @@ fun OrderCalculateData() {
 }
 
 @Composable
-fun OrderList() {
-    val myOrdersTitle = remember { MyOrdersDataDummy.myOrdersList }
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+fun OrderList(viewModel: OrderViewModel) {
+    val orders = remember { MyOrdersDataDummy.myOrdersList }
+    viewModel.updateOrderList(orders)
+
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(18.dp)) {
         items(
-            items = myOrdersTitle,
+            items = viewModel.state.orders,
             itemContent = {
-                MyOrdersListItem(myOrders = it)
+                MyOrdersListItem(myOrders = it, viewModel)
             })
     }
 
 }
 
 @Composable
-fun MyOrdersListItem(myOrders: MyOrders) {
+fun MyOrdersListItem(myOrders: MyOrders, viewModel: OrderViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -236,14 +354,14 @@ fun MyOrdersListItem(myOrders: MyOrders) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "${myOrders.price}",
+                text = viewModel.mapToDollarValue(myOrders.price),
                 style = MaterialTheme.typography.h6,
                 color = colorRedDark,
                 fontWeight = FontWeight.Bold
             )
 
         }
-        val counter = remember { mutableStateOf(1) }
+        val counter = remember { mutableStateOf(0) }
         Box(
             modifier = Modifier
                 .width(110.dp)
@@ -266,7 +384,10 @@ fun MyOrdersListItem(myOrders: MyOrders) {
                         .size(32.dp, 32.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    IconButton(onClick = { counter.value-- }) {
+                    IconButton(onClick = {
+                        counter.value--
+                        viewModel.updateQuantityForOrder(currentOrder = myOrders, counter.value)
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Minimize,
                             contentDescription = "",
@@ -292,6 +413,7 @@ fun MyOrdersListItem(myOrders: MyOrders) {
                 ) {
                     IconButton(onClick = {
                         counter.value++
+                        viewModel.updateQuantityForOrder(currentOrder = myOrders, counter.value)
                     }) {
                         Icon(
                             imageVector = Icons.Default.Add,
